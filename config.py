@@ -13,7 +13,7 @@ class Config:
     SECRET_KEY = os.urandom(20)
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_DATABASE_URI = (
-        "postgresql://tekvideo:devpassword@0.0.0.0:5432/tekvideo-dev"
+        "postgresql://multtrainer:devpassword@0.0.0.0:5432/multiplication-trainer"
     )
     FLASK_ENV = "development"
     DEBUG = True
@@ -26,7 +26,4 @@ class ProdConfig(Config):
 
 class DevConfig(Config):
     SECRET_KEY = "a"
-    SQLALCHEMY_DATABASE_URI = (
-        "postgresql://tekvideo:devpassword@0.0.0.0:5432/tekvideo-dev2"
-    )
     pass
