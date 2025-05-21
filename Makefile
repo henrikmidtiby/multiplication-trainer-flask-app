@@ -25,22 +25,13 @@ python_console:
 
 syncinstallation: .PHONY
 	pip install -r requirements.txt
-	export FLASK_APP=tekvideo.py && flask db upgrade
-	cd app/static && npm ci
+	export FLASK_APP=mult-trainer:app && flask db upgrade
 	@echo ""
-	@echo "Next step is most likely to run 'make build'"
+	@echo "Next step is most likely to run 'make rungunicornserver'"
 
 
 syncinstallationDev: .PHONY
 	pip install -r requirements.txt
-	cd app/static && npm ci
-	export FLASK_APP=tekvideo-dev.py && flask db upgrade
+	export FLASK_APP=mult-trainer-dev::app && flask db upgrade
 	@echo ""
-	@echo "Next step is most likely to run 'make build'"
-
-
-build: .PHONY
-	cd app/static && npm run build
-	#cd app/static && browserify index.js -o build/default/bundle.js
-	@echo ""
-	@echo "Next step is most likely to run 'make rungunicornserver'"
+	@echo "Next step is most likely to run 'make rungunicornserverDev'"
