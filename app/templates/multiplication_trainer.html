@@ -1,0 +1,157 @@
+<html>
+<head>
+    <title>Multiplication trainer</title>
+</head>
+<style>
+#mult_trainer div span {
+    display: inline-block;
+    width: 100px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+</style>
+<body>
+<h1>Multiplication trainer</h1>
+
+<div id="question_prompt">
+Hvad er <span id="input1">3</span> gange <span id="input2">2</span>?
+<br>
+<input id="answer"></input>
+</div>
+
+<div id="message" hidden="true">
+    Færdig, godt gået!
+    <div id="total_time_used"></div>
+
+    <div id="message_to_server">
+        <br />
+        Må siden dele følgende med udvikleren (Henrik Skov Midtiby)?
+        <br />
+        <br />
+        Antal opgaver: <span id="number_of_exercises"></span>
+        <br />
+        Tidsforbrug: <span id="used_time"></span>
+        <br />
+        Gruppe: <span id="user_group"></span>
+        <br />
+        <br />
+        <button id="button_send_message_to_server">Ja, gerne</button>
+    </div>
+</div>
+
+<div id="timer">
+    <span id="timer_value">0 </span> sekunder
+</div>
+            
+<div style="height: 50px;">
+</div>
+
+<div id="mult_trainer"></div>
+<script>
+let trainer = document.getElementById("mult_trainer");
+let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+numbers = [1, 2];
+let timer = NaN;
+let duration_string = "";
+let user_group = "";
+
+function addNumberToRowInMultipliactionTrainer(outerNumber, innerNumber, rowElement) 
+{
+    let elem = document.createElement("span");
+    elem.innerHTML = outerNumber + " x " + innerNumber;
+    rowElement.appendChild(elem);
+}
+
+function addNumberToMultiplicationTrainer(number) {
+    let elem = document.createElement("div");
+    trainer.appendChild(elem);
+    let row_name = document.createElement("span");
+    row_name.innerHTML = number
+    elem.appendChild(row_name);
+
+    numbers.forEach((n) => addNumberToRowInMultipliactionTrainer(number, n, elem));
+}
+
+function addColumnNumber(number) {
+    let elem = document.createElement("span");
+    elem.innerHTML = number;
+    trainer.firstChild.appendChild(elem);
+}
+
+trainer.appendChild(document.createElement("div"));
+trainer.firstChild.appendChild(document.createElement("span"));
+numbers.forEach(addColumnNumber)
+numbers.forEach(addNumberToMultiplicationTrainer);
+
+let current_problem = NaN;
+
+function show_next_problem() {
+    let all_spans = document.getElementById("mult_trainer").querySelectorAll("span");
+    let remaining_problems = Array.from(all_spans).filter((e) => e.innerText.includes("x") );
+    if(remaining_problems.length > 0)
+    {
+        let random_problem = remaining_problems[Math.floor(Math.random() * remaining_problems.length)];
+        current_problem = random_problem;
+        let problem_components = random_problem.innerText.split(" ");
+        document.getElementById("input1").innerText = problem_components[0];
+        document.getElementById("input2").innerText = problem_components[2];
+    }
+    else 
+    {
+        // Stop timer
+        document.getElementById("answer").removeEventListener("keyup", check_answer);
+        duration_string = Number.parseFloat((Date.now() - timer) / 1000).toFixed(2);
+        let message = "Du løste " + numbers.length**2 + " gangestykker på " + duration_string + " sekunder.";
+        document.getElementById("total_time_used").innerText = message;
+        document.getElementById("message").hidden = false;
+        document.getElementById("timer").hidden = true;
+        document.getElementById("question_prompt").hidden = true;
+        document.getElementById("number_of_exercises").innerText = numbers.length**2;
+        document.getElementById("used_time").innerText = duration_string;
+    }
+}
+
+show_next_problem();
+
+function check_answer() {
+    if(isNaN(timer))
+    {
+        timer = Date.now(); 
+    }
+    document.getElementById("timer_value").innerText = (Date.now() - timer) / 1000;
+    let input1 = document.getElementById("input1").innerText;
+    let input2 = document.getElementById("input2").innerText;
+    let answer = document.getElementById("answer").value;
+    if(input1 * input2 == answer)
+    {
+        current_problem.innerText = answer;
+        document.getElementById("answer").value = "";
+        show_next_problem();
+    }
+}
+
+document.getElementById("answer").addEventListener("keyup", check_answer);
+
+// Read the "group" value from the site url
+const paramsString = window.location.search;
+const searchParams = new URLSearchParams(paramsString);
+user_group = searchParams.get("group");
+document.getElementById("user_group").innerText = user_group;
+
+
+function send_message_to_server() {
+    let number_of_questions = numbers.length**2;
+    const url = "https://tekvideo.sdu.dk/multiplication_trainer/logger/v1/" + number_of_questions + "/" + duration_string + "/" + user_group;
+    fetch(url).then((response) => {
+            if (!response.ok) {
+            }
+            return response.blob();
+        })
+        .catch((err) => console.log("Error from fetch"));
+    console.log("Message sent to server!");
+}
+
+document.getElementById("button_send_message_to_server").addEventListener("click", send_message_to_server);
+</script>
+</body>
+</html>
