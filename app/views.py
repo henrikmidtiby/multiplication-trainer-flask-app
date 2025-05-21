@@ -1,13 +1,18 @@
 from icecream import ic
-from flask import (
-    current_app,
-    render_template,
-)
+from flask import current_app, render_template, request
 
 from app import db
 from app.models import TimingResult
 
 app = current_app
+
+
+@app.errorhandler(404)
+def not_found(e):
+    app.logger.info("Page not found")
+    app.logger.info(e)
+    app.logger.info(request.url)
+    return "hej"
 
 
 @app.route("/")
