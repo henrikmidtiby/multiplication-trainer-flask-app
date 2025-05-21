@@ -15,6 +15,7 @@ db = SQLAlchemy()
 BaseModel: DeclarativeMeta = db.Model
 metadata = db.Model.metadata
 
+
 class TimingResult(BaseModel):
     id = Column(BigInteger, primary_key=True)
     date_created = Column(DateTime, default=datetime.datetime.utcnow)
@@ -23,7 +24,7 @@ class TimingResult(BaseModel):
     used_time = Column(Float)
 
     def __repr__(self):
-        return f"""<TimingResult id = {self.id}, 
+        return f"""<TimingResult id = {self.id},
     date_created = {self.date_created},
     group = "{self.group}",
     number_of_exercises = {self.number_of_exercises},

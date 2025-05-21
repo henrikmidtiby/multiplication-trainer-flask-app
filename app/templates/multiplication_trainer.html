@@ -42,7 +42,7 @@ Hvad er <span id="input1">3</span> gange <span id="input2">2</span>?
 <div id="timer">
     <span id="timer_value">0 </span> sekunder
 </div>
-            
+
 <div style="height: 50px;">
 </div>
 
@@ -55,7 +55,7 @@ let timer = NaN;
 let duration_string = "";
 let user_group = "";
 
-function addNumberToRowInMultipliactionTrainer(outerNumber, innerNumber, rowElement) 
+function addNumberToRowInMultipliactionTrainer(outerNumber, innerNumber, rowElement)
 {
     let elem = document.createElement("span");
     elem.innerHTML = outerNumber + " x " + innerNumber;
@@ -96,7 +96,7 @@ function show_next_problem() {
         document.getElementById("input1").innerText = problem_components[0];
         document.getElementById("input2").innerText = problem_components[2];
     }
-    else 
+    else
     {
         // Stop timer
         document.getElementById("answer").removeEventListener("keyup", check_answer);
@@ -116,7 +116,7 @@ show_next_problem();
 function check_answer() {
     if(isNaN(timer))
     {
-        timer = Date.now(); 
+        timer = Date.now();
     }
     document.getElementById("timer_value").innerText = (Date.now() - timer) / 1000;
     let input1 = document.getElementById("input1").innerText;

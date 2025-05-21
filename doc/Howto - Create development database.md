@@ -14,9 +14,9 @@ postgres=# CREATE DATABASE "multiplication-trainer" OWNER tekvideo;
 CREATE DATABASE
 postgres=# \l
                                                        List of databases
-               Name               |            Owner             | Encoding |   Collate   |    Ctype    |   Access privileges   
+               Name               |            Owner             | Encoding |   Collate   |    Ctype    |   Access privileges
 ----------------------------------+------------------------------+----------+-------------+-------------+-----------------------
- multiplication-trainer           | tekvideo                     | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ multiplication-trainer           | tekvideo                     | UTF8     | en_US.UTF-8 | en_US.UTF-8 |
 postgres=# \q
 ```
 
@@ -31,5 +31,3 @@ generated, this is done using these commands.
 FLASK_APP='app:create_app("config.DevConfig")' flask db init
 FLASK_APP='app:create_app("config.DevConfig")' flask db migrate -m "Initialize database"
 ```
-
-
