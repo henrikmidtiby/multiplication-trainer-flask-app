@@ -141,7 +141,7 @@ document.getElementById("user_group").innerText = user_group;
 
 function send_message_to_server() {
     let number_of_questions = numbers.length**2;
-    const url = "https://tekvideo.sdu.dk/multiplication_trainer/logger/v1/" + number_of_questions + "/" + duration_string + "/" + user_group;
+    const url = "logger/v1/" + number_of_questions + "/" + duration_string + "/" + user_group;
     fetch(url).then((response) => {
             if (!response.ok) {
             }
