@@ -18,7 +18,9 @@ metadata = db.Model.metadata
 
 class TimingResult(BaseModel):
     id = Column(BigInteger, primary_key=True)
-    date_created = Column(DateTime, default=datetime.datetime.utcnow)
+    date_created = Column(
+        DateTime, default=datetime.datetime.now(datetime.timezone.utc)
+    )
     group = Column(String(40))
     number_of_exercises = Column(Integer)
     used_time = Column(Float)
